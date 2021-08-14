@@ -4,6 +4,15 @@
 function saveRecord(record) {
   // TODO: this function should save a transaction object to indexedDB so that
   // it can be synced with the database when the user goes back online.
+  console.log("Save record invoked");
+  // Create a transaction on the BudgetStore db with readwrite access
+  const transaction = db.transaction(["BudgetStore"], "readwrite");
+
+  // Access your BudgetStore object store
+  const store = transaction.objectStore("BudgetStore");
+
+  // Add record to your store with add method.
+  store.add(record);
 }
 
 function checkDatabase() {
@@ -13,4 +22,4 @@ function checkDatabase() {
 }
 
 // listen for app coming back online
-window.addEventListener('online', checkDatabase);
+window.addEventListener("online", checkDatabase);
