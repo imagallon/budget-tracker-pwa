@@ -2,20 +2,20 @@ const CACHE_NAME = "static-cache-v1";
 const DATA_CACHE_NAME = "data-cache-v1";
 const FILES_TO_CACHE = [
   "/",
-  "/index.html",
-  "/manifest.webmanifest",
-  "/styles.css",
-  "/index.js",
-  "/db.js",
-  "/icons/icon-192x192.png",
-  "/icons/icon-512x512.png",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./styles.css",
+  "./index.js",
+  "./db.js",
+  "./icons/icon-192x192.png",
+  "./icons/icon-512x512.png",
 ];
 
 // install
 self.addEventListener("install", function (evt) {
-  evt.waitUntil(
-    caches.open(DATA_CACHE_NAME).then((cache) => cache.add("/api/transaction"))
-  );
+  // evt.waitUntil(
+  //   caches.open(DATA_CACHE_NAME).then((cache) => cache.add("/api/transaction"))
+  // );
 
   // pre cache all static assets
   evt.waitUntil(
