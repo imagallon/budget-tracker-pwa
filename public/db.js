@@ -1,6 +1,42 @@
 // TODO: setup indexedDb connection and create an object store for saving
 // transaction data when the user is offline.
 
+const budgetVersion = 1;
+let db;
+
+const request = indexedDB.open("BudgetDB", budgetVersion);
+
+request.onerror = function (e) {
+  console.log(e.target);
+  console.log(`Woops! ${e.target.errorCode}`);
+};
+
+request.onupgradeneeded = function (e) {
+  console.log("Upgrade needed in IndexDB");
+
+  const { oldVersion } = e;
+  const newVersion = e.newVersion || db.version;
+
+  console.log(`DB Updated from version ${oldVersion} to ${newVersion}`);
+
+  db = e.target.result;
+
+  if (db.objectStoreNames.length === 0) {
+    db.createObjectStore("BudgetStore", { autoIncrement: true });
+  }
+};
+
+request.onsuccess = function (e) {
+  console.log("success");
+  db = e.target.result;
+
+  // Check if app is online before reading from db
+  if (navigator.onLine) {
+    console.log("Backend online! 🗄️");
+    checkDatabase();
+  }
+};
+
 function saveRecord(record) {
   // TODO: this function should save a transaction object to indexedDB so that
   // it can be synced with the database when the user goes back online.
